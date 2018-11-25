@@ -84,8 +84,10 @@ public class MainActivity extends AppCompatActivity {
                     recorder = OmRecorder.wav(
                             new PullTransport.Default(new PullableSource.Default(
                                     new AudioRecordConfig.Default(
-                                            MediaRecorder.AudioSource.MIC, AudioFormat.ENCODING_PCM_16BIT,
-                                            AudioFormat.CHANNEL_IN_MONO, 44100
+                                            MediaRecorder.AudioSource.MIC,
+                                            AudioFormat.ENCODING_PCM_16BIT,
+                                            AudioFormat.CHANNEL_IN_MONO,
+                                            44100
                                     )
                             )),
                             tempRecFile
@@ -93,7 +95,8 @@ public class MainActivity extends AppCompatActivity {
 
                     recorder.startRecording();
                 } else {
-                    InsertFileNameDialog filenameDialog = new InsertFileNameDialog(tempRecFile);
+                    InsertFileNameDialog filenameDialog =
+                            new InsertFileNameDialog(tempRecFile, getApplicationContext());
                     filenameDialog.show(getSupportFragmentManager(), "filename");
 
                     try {

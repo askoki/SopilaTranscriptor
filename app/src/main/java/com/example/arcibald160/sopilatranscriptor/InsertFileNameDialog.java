@@ -3,11 +3,13 @@ package com.example.arcibald160.sopilatranscriptor;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -26,10 +28,19 @@ import java.util.Date;
 public class InsertFileNameDialog extends DialogFragment {
 
     private String filename = "";
-    private File mFile;
+    private File mFile, recordFolder;
 
-    public InsertFileNameDialog(File tempFile) {
+    private String LOG_NAME = "InsertFileNameDialog";
+
+    public InsertFileNameDialog(File tempFile, Context context) {
         mFile = tempFile;
+        recordFolder = new File(Environment.getExternalStorageDirectory(), context.getString(R.string.rec_folder));
+//        create folder for recordings if it does not exist
+        if (!recordFolder.exists()) {
+            if (!recordFolder.mkdirs()) {
+                Log.d(LOG_NAME, "failed to create directory");
+            }
+        }
     }
 
     @Override
@@ -54,7 +65,7 @@ public class InsertFileNameDialog extends DialogFragment {
 
                         filename = filenameEditText.getText().toString();
                         File newFile = new File(
-                                Environment.getExternalStorageDirectory(),
+                                recordFolder,
                                 filename + ".wav"
                         );
 
@@ -83,7 +94,8 @@ public class InsertFileNameDialog extends DialogFragment {
         return builder.create();
     }
 
-    public static void copyFile(File src, File dst) throws IOException {
+
+    private static void copyFile(File src, File dst) throws IOException {
         InputStream in = new FileInputStream(src);
         try {
             OutputStream out = new FileOutputStream(dst);
