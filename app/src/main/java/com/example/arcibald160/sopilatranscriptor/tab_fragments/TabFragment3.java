@@ -1,10 +1,12 @@
-package com.example.arcibald160.sopilatranscriptor;
+package com.example.arcibald160.sopilatranscriptor.tab_fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.arcibald160.sopilatranscriptor.R;
 
 
 public class TabFragment3 extends Fragment {

@@ -1,7 +1,6 @@
-package com.example.arcibald160.sopilatranscriptor;
+package com.example.arcibald160.sopilatranscriptor.tab_fragments;
 
 import android.media.AudioFormat;
-import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
@@ -10,8 +9,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ToggleButton;
+
+import com.example.arcibald160.sopilatranscriptor.helpers.InsertFileNameDialog;
+import com.example.arcibald160.sopilatranscriptor.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,23 +47,6 @@ public class TabFragment2 extends Fragment {
         );
 
         final ToggleButton recButton = view.findViewById(R.id.rec_button);
-        Button playButton = view.findViewById(R.id.play_btn);
-        Button stopButton = view.findViewById(R.id.stop_play_btn);
-
-        final MediaPlayer mPlayer = new MediaPlayer();
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPlayer.start();
-            }
-        });
-
-        stopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPlayer.stop();
-            }
-        });
 
         recButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,14 +72,6 @@ public class TabFragment2 extends Fragment {
 
                     try {
                         recorder.stopRecording();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        mPlayer.reset();
-                        mPlayer.setDataSource(tempRecFile.getAbsolutePath());
-                        mPlayer.prepare();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

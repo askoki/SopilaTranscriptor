@@ -1,4 +1,4 @@
-package com.example.arcibald160.sopilatranscriptor;
+package com.example.arcibald160.sopilatranscriptor.helpers;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.text.format.DateFormat;
+
+import com.example.arcibald160.sopilatranscriptor.R;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,6 +60,7 @@ public class InsertFileNameDialog extends DialogFragment {
 
         filenameEditText.setText(filename);
 
+//        create recording
         builder.setView(dialogView)
                .setMessage(R.string.filename_dialog_header)
                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {

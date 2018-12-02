@@ -1,4 +1,4 @@
-package com.example.arcibald160.sopilatranscriptor;
+package com.example.arcibald160.sopilatranscriptor.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

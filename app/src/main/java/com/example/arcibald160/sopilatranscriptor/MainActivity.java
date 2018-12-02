@@ -1,14 +1,8 @@
 package com.example.arcibald160.sopilatranscriptor;
 
 import android.Manifest;
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.media.AudioFormat;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.media.MediaScannerConnection;
 import android.os.Build;
 
 import android.support.annotation.RequiresApi;
@@ -17,8 +11,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TabHost;
+
+import com.example.arcibald160.sopilatranscriptor.adapters.TabPageAdapter;
+import com.example.arcibald160.sopilatranscriptor.tab_fragments.TabFragment1;
+import com.example.arcibald160.sopilatranscriptor.tab_fragments.TabFragment2;
+import com.example.arcibald160.sopilatranscriptor.tab_fragments.TabFragment3;
 
 
 @RequiresApi(api = Build.VERSION_CODES.M)
