@@ -1,6 +1,8 @@
 package com.example.arcibald160.sopilatranscriptor;
 
 import android.Manifest;
+import android.app.ActionBar;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.AudioFormat;
@@ -10,41 +12,52 @@ import android.media.MediaScannerConnection;
 import android.os.Build;
 
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ToggleButton;
-import android.os.Environment;
+import android.widget.TabHost;
 
-import java.io.File;
-import java.io.IOException;
-
-import omrecorder.AudioRecordConfig;
-import omrecorder.OmRecorder;
-import omrecorder.PullTransport;
-import omrecorder.PullableSource;
-import omrecorder.Recorder;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class MainActivity extends AppCompatActivity {
 
-    private Recorder recorder;
-    private File tempRecFile = new File(Environment.getExternalStorageDirectory(), "demo.wav");
+    private TabPageAdapter mTabPageAdapter;
+    private ViewPager mViewPager;
+    private static final int TAB_NUMBER = 3;
+    private int[] icons = {
+            R.drawable.list_rec_img,
+            R.drawable.mic_img,
+            R.drawable.settings_img
+    };
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
-        MediaScannerConnection.scanFile(
-                getApplicationContext(),
-                new String[]{tempRecFile.getAbsolutePath()},
-                null,
-                null
-        );
+        // control tabs
+        mTabPageAdapter = new TabPageAdapter(getSupportFragmentManager());
+
+        mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        mViewPager.setOffscreenPageLimit(TAB_NUMBER);
+        setupViewPager(mViewPager);
+
+        mViewPager.setCurrentItem(1);
+
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(mViewPager);
+//        set icons
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            tabLayout.getTabAt(i).setIcon(icons[i]);
+        }
+
 
         int PERMISSION_ALL = 0;
         String[] PERMISSIONS = {
@@ -56,73 +69,6 @@ public class MainActivity extends AppCompatActivity {
         if(!hasPermissions(this, PERMISSIONS)){
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
-
-        final ToggleButton recButton = findViewById(R.id.rec_button);
-        Button playButton = findViewById(R.id.play_btn);
-        Button stopButton = findViewById(R.id.stop_play_btn);
-
-        final MediaPlayer mPlayer = new MediaPlayer();
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPlayer.start();
-            }
-        });
-
-        stopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPlayer.stop();
-            }
-        });
-
-        recButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (recButton.isChecked()) {
-                    // recButton.setChecked(recordSound.startRecording());
-                    recorder = OmRecorder.wav(
-                            new PullTransport.Default(new PullableSource.Default(
-                                    new AudioRecordConfig.Default(
-                                            MediaRecorder.AudioSource.MIC,
-                                            AudioFormat.ENCODING_PCM_16BIT,
-                                            AudioFormat.CHANNEL_IN_MONO,
-                                            44100
-                                    )
-                            )),
-                            tempRecFile
-                    );
-
-                    recorder.startRecording();
-                } else {
-                    InsertFileNameDialog filenameDialog =
-                            new InsertFileNameDialog(tempRecFile, getApplicationContext());
-                    filenameDialog.show(getSupportFragmentManager(), "filename");
-
-                    try {
-                        recorder.stopRecording();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        mPlayer.reset();
-                        mPlayer.setDataSource(tempRecFile.getAbsolutePath());
-                        mPlayer.prepare();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    MediaScannerConnection.scanFile(
-                            getApplicationContext(),
-                            new String[]{tempRecFile.getAbsolutePath()},
-                            null,
-                            null
-                    );
-
-                }
-            }
-        });
     }
 
     // check if app has permissions so we dont spam the user
@@ -140,5 +86,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        TabPageAdapter adapter = new TabPageAdapter(getSupportFragmentManager());
+        adapter.addFragment(new TabFragment1(), "1");
+        adapter.addFragment(new TabFragment2(), "2");
+        adapter.addFragment(new TabFragment3(), "3");
+        viewPager.setAdapter(adapter);
     }
 }
