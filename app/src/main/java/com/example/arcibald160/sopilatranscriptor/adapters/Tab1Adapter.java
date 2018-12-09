@@ -1,7 +1,6 @@
 package com.example.arcibald160.sopilatranscriptor.adapters;
 
 import android.content.Context;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -47,7 +46,7 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.ListViewHolder
         final File file = mRecordings[position];
 //        bytes to kilo bytes
         String size = Utils.formatFileSize(file.length());
-        String duration = getDuration(file);
+        String duration = Utils.getFileDuration(file);
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALY).format(new Date(file.lastModified()));
 
         //Set values
@@ -87,13 +86,6 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.ListViewHolder
         File recordingsDirectory = new File(PATH);
         mRecordings = recordingsDirectory.listFiles();
         notifyDataSetChanged();
-    }
-
-    private static String getDuration(File file) {
-        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-        mediaMetadataRetriever.setDataSource(file.getAbsolutePath());
-        String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-        return Utils.formatMiliseconds(Long.parseLong(durationStr));
     }
 
     public class ListViewHolder extends RecyclerView.ViewHolder{

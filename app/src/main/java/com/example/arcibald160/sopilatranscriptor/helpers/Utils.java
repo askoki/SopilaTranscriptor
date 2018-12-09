@@ -1,5 +1,13 @@
 package com.example.arcibald160.sopilatranscriptor.helpers;
 
+import android.content.Context;
+import android.media.MediaMetadataRetriever;
+import android.os.Build;
+import android.os.Environment;
+import android.os.StatFs;
+import android.support.annotation.RequiresApi;
+
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 public class Utils {
@@ -21,11 +29,43 @@ public class Utils {
         long sizeInKB = sizeInBytes / 1024;
 
         // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
-        long sizeInMB = sizeInKB / 1024;
+        float sizeInMB = (float) ((float) sizeInKB / 1024.0);
 
-        if (sizeInMB > 1.0) {
-            return String.valueOf(sizeInMB) + " MB";
+        // Convert to GB
+        float sizeInGB = (float) (sizeInMB / 1024.0);
+
+        if (sizeInGB >= 1.0) {
+            String stringGB = String.format("%02.2f GB", sizeInGB);
+            return stringGB;
+        } else if (sizeInMB >= 1.0) {
+            String stringMB = String.format("%02.2f MB", sizeInMB);
+            return stringMB;
         }
+
         return String.valueOf(sizeInKB) + " KB";
+    }
+
+    public static String getFileDuration(File file) {
+        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+        try {
+            mediaMetadataRetriever.setDataSource(file.getAbsolutePath());
+        } catch (RuntimeException e) {
+            // file is not ready yet
+            return null;
+        }
+        String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        return Utils.formatMiliseconds(Long.parseLong(durationStr));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+    public static String getAvailableInternalMemorySize(String prependText) {
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+
+        long blockSize = stat.getBlockSizeLong();
+        long availableBlocks = stat.getAvailableBlocksLong();
+
+        String freeSpaceString = prependText + " " + formatFileSize(availableBlocks * blockSize);
+        return freeSpaceString;
     }
 }

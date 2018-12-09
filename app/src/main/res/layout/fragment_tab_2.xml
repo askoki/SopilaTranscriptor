@@ -5,7 +5,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_blue"
     tools:context=".tab_fragments.TabFragment2">
+
+    <TextView
+        android:id="@+id/free_space"
+        android:layout_width="160dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_box"
+        android:gravity="center"
+        android:text="@string/duration_default"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/rec_button"
+        app:layout_constraintEnd_toStartOf="@+id/size_recorded"
+        app:layout_constraintStart_toEndOf="@+id/time_recorded"
+        app:layout_constraintTop_toBottomOf="@+id/cover_image" />
 
     <ToggleButton
         android:id="@+id/rec_button"
@@ -24,5 +44,55 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/time_recorded"
+        android:layout_width="78dp"
+        android:layout_height="70dp"
+        android:background="@drawable/rounded_box"
+        android:gravity="center"
+        android:text="@string/duration_default"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rec_button"
+        app:layout_constraintEnd_toStartOf="@+id/rec_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rec_button" />
+
+    <TextView
+        android:id="@+id/size_recorded"
+        android:layout_width="78dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/rounded_box"
+        android:gravity="center"
+        android:text="@string/size_default"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rec_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rec_button"
+        app:layout_constraintTop_toTopOf="@+id/rec_button" />
+
+    <ImageView
+        android:id="@+id/cover_image"
+        android:layout_width="287dp"
+        android:layout_height="231dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="32dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/rounded_box"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/sopila_fore"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/rec_button"
+        app:layout_constraintEnd_toEndOf="@+id/size_recorded"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintStart_toStartOf="@+id/time_recorded"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.153" />
 
 </android.support.constraint.ConstraintLayout>

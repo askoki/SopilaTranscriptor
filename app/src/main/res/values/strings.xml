@@ -4,4 +4,7 @@
     <string name="ok" translatable="true">Ok</string>
     <string name="cancel" translatable="true">Cancel</string>
     <string name="rec_folder">sopilaRecordings</string>
+    <string name="duration_default">00:00s</string>
+    <string name="size_default">0 KB</string>
+    <string name="free_space_msg">Remaining storage:</string>
 </resources>
