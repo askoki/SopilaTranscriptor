@@ -8,8 +8,10 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_tab1"
         android:scrollbars="vertical"
+        android:adjustViewBounds="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/action_bar_height">
     </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>
