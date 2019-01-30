@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.arcibald160.sopilatranscriptor.R;
-import com.example.arcibald160.sopilatranscriptor.helpers.GitHubClient;
-import com.example.arcibald160.sopilatranscriptor.helpers.GitHubRepo;
+import com.example.arcibald160.sopilatranscriptor.helpers.SopilaClient;
+import com.example.arcibald160.sopilatranscriptor.helpers.SopilaServerFile;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class TabFragment3 extends Fragment {
         test_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String API_BASE_URL = "https://api.github.com/";
+                    String API_BASE_URL = "http://192.168.1.5:8000";
 
                     OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
@@ -59,22 +59,22 @@ public class TabFragment3 extends Fragment {
                                     )
                                     .build();
 
-                    GitHubClient client =  retrofit.create(GitHubClient.class);
+                    SopilaClient client =  retrofit.create(SopilaClient.class);
                     Toast.makeText(view.getContext(), "Sent", Toast.LENGTH_LONG).show();
 
                     // Fetch a list of the Github repositories.
-                    Call<List<GitHubRepo>> call = client.reposForUser("askoki160");
-                    call.enqueue(new Callback<List<GitHubRepo>>() {
+                    Call<SopilaServerFile> call = client.getFile();
+                    call.enqueue(new Callback<SopilaServerFile>() {
                         @Override
-                        public void onResponse(Call<List<GitHubRepo>> call, Response<List<GitHubRepo>> response) {
+                        public void onResponse(Call<SopilaServerFile> call, Response<SopilaServerFile> response) {
                             // The network call was a success and we got a response
                             // TODO: use the repository list and display it
                             Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getContext(), response.body().get(0).getName(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), response.body().getFile(), Toast.LENGTH_LONG).show();
                         }
 
                         @Override
-                        public void onFailure(Call<List<GitHubRepo>> call, Throwable t) {
+                        public void onFailure(Call<SopilaServerFile> call, Throwable t) {
                             // the network call was a failure
                             // TODO: handle error
                             Toast.makeText(getContext(), "Failure", Toast.LENGTH_LONG).show();
