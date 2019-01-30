@@ -7,4 +7,5 @@
     <string name="duration_default">00:00s</string>
     <string name="size_default">0 KB</string>
     <string name="free_space_msg">Remaining storage:</string>
+    <string name="pdf_folder">sopilaMusicSheets</string>
 </resources>

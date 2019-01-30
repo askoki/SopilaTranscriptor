@@ -1,9 +1,10 @@
 package com.example.arcibald160.sopilatranscriptor.helpers;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
-public interface SopilaClient {
+public interface PdfDownloadClient {
     @GET("download/api")
-    Call<SopilaServerFile> getFile();
+    Call<ResponseBody> downloadMusicSheetPdf();
 }
