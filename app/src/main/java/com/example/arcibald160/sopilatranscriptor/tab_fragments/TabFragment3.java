@@ -1,11 +1,14 @@
 package com.example.arcibald160.sopilatranscriptor.tab_fragments;
 
+import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,6 +31,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class TabFragment3 extends Fragment {
 
@@ -47,46 +52,52 @@ public class TabFragment3 extends Fragment {
         test_btn = view.findViewById(R.id.test_btn);
 
         test_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String API_BASE_URL = "http://192.168.1.5:8000";
+                                        @Override
+                                        public void onClick(View view) {
 
-                    OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+                                            SharedPreferences prefs = getContext().getSharedPreferences(getString(R.string.sp_secret_key), MODE_PRIVATE);
+                                            String serverIpAddress = prefs.getString(getString(R.string.sp_ip_server_address), null);
+                                            if (serverIpAddress == null) {
+                                                serverIpAddress = getString(R.string.sp_ip_server_address_default);
+                                            }
+                                            String API_BASE_URL = "http://" + serverIpAddress;
 
-                    Retrofit.Builder builder = new Retrofit.Builder()
-                                .baseUrl(API_BASE_URL)
-                                .addConverterFactory(GsonConverterFactory.create());
+                                            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-                    Retrofit retrofit = builder.client(httpClient.build()).build();
+                                            Retrofit.Builder builder = new Retrofit.Builder()
+                                                    .baseUrl(API_BASE_URL)
+                                                    .addConverterFactory(GsonConverterFactory.create());
+
+                                            Retrofit retrofit = builder.client(httpClient.build()).build();
 
 
-                    // SopilaClient client =  retrofit.create(SopilaClient.class);
-                    PdfDownloadClient pdfDownloadClient = retrofit.create(PdfDownloadClient.class);
+                                            // SopilaClient client =  retrofit.create(SopilaClient.class);
+                                            PdfDownloadClient pdfDownloadClient = retrofit.create(PdfDownloadClient.class);
 
-                    Call<ResponseBody> call = pdfDownloadClient.downloadMusicSheetPdf();
-                    Toast.makeText(view.getContext(), "Sent", Toast.LENGTH_LONG).show();
+                                            Call<ResponseBody> call = pdfDownloadClient.downloadMusicSheetPdf();
+                                            Toast.makeText(view.getContext(), "Sent", Toast.LENGTH_LONG).show();
 
-                    call.enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.isSuccessful()) {
-                                Toast.makeText(getContext(), "Server contact success", Toast.LENGTH_SHORT).show();
+                                            call.enqueue(new Callback<ResponseBody>() {
+                                                @Override
+                                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                    if (response.isSuccessful()) {
+                                                        Toast.makeText(getContext(), "Server contact success", Toast.LENGTH_SHORT).show();
 
-                                boolean writtenToDisk = writeResponseBodyToDisk(response.body());
-                                Log.d(TAG, "file download was a success? " + writtenToDisk);
-                            } else {
-                                Toast.makeText(getContext(), "Server contact failed", Toast.LENGTH_LONG).show();
-                            }
-                        }
+                                                        boolean writtenToDisk = writeResponseBodyToDisk(response.body());
+                                                        Log.d(TAG, "file download was a success? " + writtenToDisk);
+                                                    } else {
+                                                        Toast.makeText(getContext(), "Server contact failed", Toast.LENGTH_LONG).show();
+                                                    }
+                                                }
 
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Toast.makeText(getContext(), "Failed :(", Toast.LENGTH_LONG).show();
-                        }
-                    });
+                                                @Override
+                                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                                    Toast.makeText(getContext(), "Failed :(", Toast.LENGTH_LONG).show();
+                                                }
+                                            });
 
-                }
-            }
+                                        }
+                                    }
         );
         // Inflate the layout for this fragment
         return view;

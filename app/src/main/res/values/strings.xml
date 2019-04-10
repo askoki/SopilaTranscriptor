@@ -8,4 +8,10 @@
     <string name="size_default">0 KB</string>
     <string name="free_space_msg">Remaining storage:</string>
     <string name="pdf_folder">sopilaMusicSheets</string>
+    <string name="server_ip_label">Edit server ip address</string>
+    <string name="save_label">Save</string>
+    <string name="ip_changed_info">IP address was successfully changed!</string>
+    <string name="sp_secret_key">shared_preferences_sk</string>
+    <string name="sp_ip_server_address">shared_pref_ip_address</string>
+    <string name="sp_ip_server_address_default">192.168.1.5:8000</string>
 </resources>

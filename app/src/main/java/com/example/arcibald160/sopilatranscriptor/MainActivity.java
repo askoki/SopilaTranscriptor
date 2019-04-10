@@ -2,6 +2,8 @@ package com.example.arcibald160.sopilatranscriptor;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
@@ -9,8 +11,15 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.arcibald160.sopilatranscriptor.adapters.TabPageAdapter;
 import com.example.arcibald160.sopilatranscriptor.tab_fragments.TabFragment1;
@@ -91,5 +100,62 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new TabFragment2(), "2");
         adapter.addFragment(new TabFragment3(), "3");
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.settings_menu, menu); //your file name
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.change_server_ip:
+                // edit text dialog for setting ip address
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                alertDialog.setTitle(getString(R.string.server_ip_label));
+                final EditText ipAddressEditText = new EditText(this);
+
+                // starting ip address (take from shared preferences or put a default)
+                final SharedPreferences prefs = getSharedPreferences(getString(R.string.sp_secret_key), MODE_PRIVATE);
+                String serverIpAddress = prefs.getString(getString(R.string.sp_ip_server_address), null);
+                if (serverIpAddress == null) {
+                    serverIpAddress = getString(R.string.sp_ip_server_address_default);
+                }
+
+                ipAddressEditText.setText(serverIpAddress);
+
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                );
+                ipAddressEditText.setLayoutParams(lp);
+                alertDialog.setView(ipAddressEditText);
+                alertDialog.setPositiveButton(getString(R.string.save_label),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putString(getString(R.string.sp_ip_server_address), String.valueOf(ipAddressEditText.getText()));
+                                editor.apply();
+                                Toast.makeText(getApplicationContext(),
+                                        getString(R.string.ip_changed_info), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                alertDialog.setNegativeButton(getString(R.string.cancel),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 }
