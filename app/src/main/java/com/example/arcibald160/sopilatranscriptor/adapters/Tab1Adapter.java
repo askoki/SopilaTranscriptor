@@ -80,7 +80,10 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.ListViewHolder
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         final Context context = view.getContext();
+
                         if (menuItem.getTitle().toString().equals(context.getString(R.string.rename_label))) {
+                            // rename
+
                             AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
                             alertDialog.setTitle(context.getString(R.string.rename_label));
                             final EditText newNameEditText = new EditText(context);
@@ -102,10 +105,28 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.ListViewHolder
                                     }
                                 });
                             alertDialog.show();
-                         }
-                        // TODO: impement delete
-                        // TODO: impement export
-                        Toast.makeText(view.getContext(), "You have clicked " + menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                         } else if (menuItem.getTitle().toString().equals(context.getString(R.string.delete_label))) {
+                            // delete
+
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                            alertDialog.setTitle(context.getString(R.string.delete_recording_warning));
+
+                            alertDialog.setPositiveButton(context.getString(R.string.delete_label),
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            file.delete();
+                                            refreshRecDir();
+                                        }
+                                    });
+                            alertDialog.setNegativeButton(context.getString(R.string.cancel),
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                            alertDialog.show();
+                        }
+                        // TODO: implement export
                         return true;
                     }
                 });
