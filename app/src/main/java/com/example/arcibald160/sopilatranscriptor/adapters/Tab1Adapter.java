@@ -1,15 +1,18 @@
 package com.example.arcibald160.sopilatranscriptor.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -50,7 +53,7 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.ListViewHolder
 //        bytes to kilo bytes
         String size = Utils.formatFileSize(file.length());
         String duration = Utils.getFileDuration(file);
-        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALY).format(new Date(file.lastModified()));
+        final String date = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALY).format(new Date(file.lastModified()));
 
         //Set values
         holder.recName.setText(file.getName());
@@ -76,7 +79,30 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.ListViewHolder
 
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        // TODO: impement rename
+                        final Context context = view.getContext();
+                        if (menuItem.getTitle().toString().equals(context.getString(R.string.rename_label))) {
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                            alertDialog.setTitle(context.getString(R.string.rename_label));
+                            final EditText newNameEditText = new EditText(context);
+                            newNameEditText.setText(file.getName());
+
+                            alertDialog.setView(newNameEditText);
+                            alertDialog.setPositiveButton(context.getString(R.string.save_label),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        File newFile = new File(file.getParent(), newNameEditText.getText().toString());
+                                        Utils.renameFile(file, newFile);
+                                        refreshRecDir();
+                                    }
+                                });
+                            alertDialog.setNegativeButton(context.getString(R.string.cancel),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+                            alertDialog.show();
+                         }
                         // TODO: impement delete
                         // TODO: impement export
                         Toast.makeText(view.getContext(), "You have clicked " + menuItem.getTitle(), Toast.LENGTH_LONG).show();

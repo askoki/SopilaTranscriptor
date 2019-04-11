@@ -68,4 +68,8 @@ public class Utils {
         String freeSpaceString = prependText + " " + formatFileSize(availableBlocks * blockSize);
         return freeSpaceString;
     }
+
+    public static boolean renameFile(File from, File to) {
+        return from.getParentFile().exists() && from.exists() && from.renameTo(to);
+    }
 }
