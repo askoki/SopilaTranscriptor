@@ -1,21 +1,24 @@
 package com.example.arcibald160.sopilatranscriptor.adapters;
 
 import android.content.Context;
-import android.media.MediaPlayer;
+import android.content.Intent;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.arcibald160.sopilatranscriptor.R;
 import com.example.arcibald160.sopilatranscriptor.helpers.Utils;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -41,7 +44,7 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.ListViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ListViewHolder holder, int position) {
 
         final File file = mRecordings[position];
 //        bytes to kilo bytes
@@ -54,19 +57,33 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.ListViewHolder
         holder.recTimeAndSize.setText(duration + " - " + size);
         holder.recDateCreated.setText(date);
 
-        final MediaPlayer mPlayer = new MediaPlayer();
-        try {
-            mPlayer.reset();
-            mPlayer.setDataSource(file.getAbsolutePath());
-            mPlayer.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         holder.recEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPlayer.start();
+                Intent intent = new Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER);
+                view.getContext().startActivity(intent);
+            }
+        });
+
+
+        holder.menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                PopupMenu recordingMenu = new PopupMenu(view.getContext(), holder.menuButton);
+                recordingMenu.getMenuInflater().inflate(R.menu.recording_utils_menu, recordingMenu.getMenu());
+
+                recordingMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        // TODO: impement rename
+                        // TODO: impement delete
+                        // TODO: impement export
+                        Toast.makeText(view.getContext(), "You have clicked " + menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        return true;
+                    }
+                });
+                recordingMenu.show();
             }
         });
     }
@@ -90,14 +107,15 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.ListViewHolder
 
     public class ListViewHolder extends RecyclerView.ViewHolder{
         TextView recName, recTimeAndSize, recDateCreated;
-        LinearLayout recEntry;
+        ImageButton menuButton, recEntry;
 
         public ListViewHolder(View itemView) {
             super(itemView);
             recName = itemView.findViewById(R.id.recording_name);
             recTimeAndSize = itemView.findViewById(R.id.time_and_size);
             recDateCreated = itemView.findViewById(R.id.date_created);
-            recEntry = itemView.findViewById(R.id.rec_entry);
+            recEntry = itemView.findViewById(R.id.play_recording);
+            menuButton = itemView.findViewById(R.id.more_button);
         }
     }
 }

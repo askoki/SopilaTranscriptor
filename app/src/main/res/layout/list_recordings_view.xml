@@ -21,7 +21,7 @@
                 android:id="@+id/play_recording"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:background="@color/white"
+                android:background="@android:color/transparent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -34,7 +34,7 @@
                 android:layout_height="35dp"
                 android:text="mala0"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/imageView"
+                app:layout_constraintEnd_toStartOf="@+id/more_button"
                 app:layout_constraintStart_toEndOf="@+id/play_recording"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,19 +56,20 @@
                 android:text="2018-11-11"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView"
+                app:layout_constraintEnd_toStartOf="@+id/more_button"
                 app:layout_constraintHorizontal_bias="0.487"
                 app:layout_constraintStart_toEndOf="@+id/time_and_size" />
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageButton
+                android:id="@+id/more_button"
+                android:layout_width="21dp"
+                android:layout_height="23dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginRight="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:background="@android:color/transparent"
                 app:srcCompat="@drawable/more_options"
                 tools:ignore="VectorDrawableCompat" />
         </android.support.constraint.ConstraintLayout>
