@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private int[] icons = {
             R.drawable.list_rec_img,
             R.drawable.mic_img,
-            R.drawable.settings_img
+            R.drawable.list_sheets_icon
     };
 
 
