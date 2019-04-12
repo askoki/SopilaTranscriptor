@@ -50,7 +50,7 @@ public class TabFragment3 extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            mAdapter.refreshRecDir();
+            mAdapter.refreshSheetDir();
         }
     }
 

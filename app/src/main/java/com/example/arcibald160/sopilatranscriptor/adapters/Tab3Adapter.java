@@ -1,11 +1,12 @@
 package com.example.arcibald160.sopilatranscriptor.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,30 @@ public class Tab3Adapter extends RecyclerView.Adapter<Tab3Adapter.ListViewHolder
         holder.sheetSize.setText(size);
         holder.sheetDateCreated.setText(date);
 
+        holder.sheetEntry.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+                alertDialog.setTitle(view.getContext().getString(R.string.delete_sheet_warning));
+
+                alertDialog.setPositiveButton(view.getContext().getString(R.string.delete_label),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            file.delete();
+                            refreshSheetDir();
+                        }
+                    });
+                alertDialog.setNegativeButton(view.getContext().getString(R.string.cancel),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                alertDialog.show();
+                return true;
+            }
+        });
+
         holder.sheetEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +99,7 @@ public class Tab3Adapter extends RecyclerView.Adapter<Tab3Adapter.ListViewHolder
         return mSheets.length;
     }
 
-    public void refreshRecDir() {
+    public void refreshSheetDir() {
         mSheets = null;
         File sheetsDirectory = Utils.getDownloadsDir(mContext);
         mSheets = sheetsDirectory.listFiles();
