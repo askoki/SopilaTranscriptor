@@ -1,7 +1,11 @@
 package com.example.arcibald160.sopilatranscriptor.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +49,19 @@ public class Tab3Adapter extends RecyclerView.Adapter<Tab3Adapter.ListViewHolder
         holder.sheetName.setText(file.getName());
         holder.sheetSize.setText(size);
         holder.sheetDateCreated.setText(date);
+
+        holder.sheetEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri pdf = FileProvider.getUriForFile(view.getContext(), view.getContext().getPackageName() + ".provider", file);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+
+                intent.setDataAndType(pdf, "application/pdf");
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
