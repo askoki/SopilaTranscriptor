@@ -4,10 +4,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,11 +25,14 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.arcibald160.sopilatranscriptor.BuildConfig;
+import com.example.arcibald160.sopilatranscriptor.MainActivity;
 import com.example.arcibald160.sopilatranscriptor.R;
 import com.example.arcibald160.sopilatranscriptor.helpers.PdfDownloadClient;
 import com.example.arcibald160.sopilatranscriptor.helpers.Utils;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -39,6 +46,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.provider.Settings.AUTHORITY;
 
 public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.ListViewHolder> {
 
@@ -75,11 +83,26 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.ListViewHolder
         holder.recTimeAndSize.setText(duration + " - " + size);
         holder.recDateCreated.setText(date);
 
-        holder.recEntry.setOnClickListener(new View.OnClickListener() {
+        holder.playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER);
-                view.getContext().startActivity(intent);
+
+                if(Build.VERSION.SDK_INT >= 24){
+                    try {
+                        Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                        m.invoke(null);
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Uri apkURI = FileProvider.getUriForFile(
+                            view.getContext(),
+                            view.getContext().getPackageName() + ".provider", file);
+                    intent.setDataAndType(apkURI, "audio/*");
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    view.getContext().startActivity(intent);
+                }
             }
         });
 
@@ -222,14 +245,14 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.ListViewHolder
 
     public class ListViewHolder extends RecyclerView.ViewHolder{
         TextView recName, recTimeAndSize, recDateCreated;
-        ImageButton menuButton, recEntry;
+        ImageButton menuButton, playButton;
 
         public ListViewHolder(View itemView) {
             super(itemView);
             recName = itemView.findViewById(R.id.recording_name);
             recTimeAndSize = itemView.findViewById(R.id.time_and_size);
             recDateCreated = itemView.findViewById(R.id.date_created);
-            recEntry = itemView.findViewById(R.id.play_recording);
+            playButton = itemView.findViewById(R.id.play_recording);
             menuButton = itemView.findViewById(R.id.more_button);
         }
     }
