@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.example.arcibald160.sopilatranscriptor.BuildConfig;
 import com.example.arcibald160.sopilatranscriptor.MainActivity;
 import com.example.arcibald160.sopilatranscriptor.R;
+import com.example.arcibald160.sopilatranscriptor.helpers.FileUploadService;
 import com.example.arcibald160.sopilatranscriptor.helpers.PdfDownloadClient;
 import com.example.arcibald160.sopilatranscriptor.helpers.Utils;
 
@@ -37,7 +38,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -168,9 +172,11 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.ListViewHolder
 
                             SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.sp_secret_key), MODE_PRIVATE);
                             String serverIpAddress = prefs.getString(context.getString(R.string.sp_ip_server_address), null);
+
                             if (serverIpAddress == null) {
                                 serverIpAddress = context.getString(R.string.sp_ip_server_address_default);
                             }
+
                             String API_BASE_URL = "http://" + serverIpAddress;
 
                             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -181,41 +187,70 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.ListViewHolder
 
                             Retrofit retrofit = builder.client(httpClient.build()).build();
 
+                            Uri fileUri = Uri.fromFile(file);
 
-                            // SopilaClient client =  retrofit.create(SopilaClient.class);
-                            PdfDownloadClient pdfDownloadClient = retrofit.create(PdfDownloadClient.class);
+                            // create RequestBody instance from file
+                            RequestBody requestFile = RequestBody.create(
+                                    MediaType.parse("audio/*"),
+                                    file
+                            );
 
-                            Call<ResponseBody> call = pdfDownloadClient.downloadMusicSheetPdf();
-                            Toast.makeText(view.getContext(), "Sent", Toast.LENGTH_LONG).show();
+                            // MultipartBody.Part is used to send also the actual file name
+                            MultipartBody.Part body = MultipartBody.Part.createFormData("audio", file.getName(), requestFile);
 
+                            // add another part within the multipart request
+                            String descriptionString = "Recording description";
+                            RequestBody description = RequestBody.create(okhttp3.MultipartBody.FORM, descriptionString);
+
+                            // finally, execute the request
+                            FileUploadService uploadFileService = retrofit.create(FileUploadService.class);
+                            Call<ResponseBody> call = uploadFileService.upload(description, body);
                             call.enqueue(new Callback<ResponseBody>() {
                                 @Override
-                                public void onResponse(Call<ResponseBody> call, final Response<ResponseBody> response) {
-                                    if (response.isSuccessful()) {
-                                        Toast.makeText(context, "Server contact success", Toast.LENGTH_SHORT).show();
-
-                                        final String shortFilename = file.getName().replaceFirst("[.][^.]+$", "");
-
-                                        new AsyncTask<Void, Void, Void>() {
-                                            @Override
-                                            protected Void doInBackground(Void... voids) {
-                                                boolean writtenToDisk = Utils.writeResponseBodyToDisk(response.body(), context, TAG, shortFilename);
-
-                                                Log.d(TAG, "file download was a success? " + writtenToDisk);
-                                                return null;
-                                            }
-
-                                        }.execute();
-                                    } else {
-                                        Toast.makeText(context, "Server contact failed", Toast.LENGTH_LONG).show();
-                                    }
+                                public void onResponse(Call<ResponseBody> call,
+                                                       Response<ResponseBody> response) {
+                                    Log.v("Upload", "success");
                                 }
 
                                 @Override
                                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                    Toast.makeText(context, "Failed :(", Toast.LENGTH_LONG).show();
+                                    Log.e("Upload error:", t.getMessage());
                                 }
                             });
+
+//                            PdfDownloadClient pdfDownloadClient = retrofit.create(PdfDownloadClient.class);
+//
+//                            Call<ResponseBody> call = pdfDownloadClient.downloadMusicSheetPdf();
+//                            Toast.makeText(view.getContext(), "Sent", Toast.LENGTH_LONG).show();
+//
+//                            call.enqueue(new Callback<ResponseBody>() {
+//                                @Override
+//                                public void onResponse(Call<ResponseBody> call, final Response<ResponseBody> response) {
+//                                    if (response.isSuccessful()) {
+//                                        Toast.makeText(context, "Server contact success", Toast.LENGTH_SHORT).show();
+//
+//                                        final String shortFilename = file.getName().replaceFirst("[.][^.]+$", "");
+//
+//                                        new AsyncTask<Void, Void, Void>() {
+//                                            @Override
+//                                            protected Void doInBackground(Void... voids) {
+//                                                boolean writtenToDisk = Utils.writeResponseBodyToDisk(response.body(), context, TAG, shortFilename);
+//
+//                                                Log.d(TAG, "file download was a success? " + writtenToDisk);
+//                                                return null;
+//                                            }
+//
+//                                        }.execute();
+//                                    } else {
+//                                        Toast.makeText(context, "Server contact failed", Toast.LENGTH_LONG).show();
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                                    Toast.makeText(context, "Failed :(", Toast.LENGTH_LONG).show();
+//                                }
+//                            });
 
                         }
                         return true;
