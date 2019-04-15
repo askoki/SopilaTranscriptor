@@ -140,6 +140,7 @@ public class TabFragment2 extends Fragment {
         // stop Runnable
         timerHandler.removeCallbacks(updater);
         durationView.setText(getString(R.string.duration_default));
+        durationSec = 0;
         sizeView.setText(getString(R.string.size_default));
     }
 
