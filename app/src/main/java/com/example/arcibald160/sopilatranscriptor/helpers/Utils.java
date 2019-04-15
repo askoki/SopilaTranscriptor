@@ -1,13 +1,17 @@
 package com.example.arcibald160.sopilatranscriptor.helpers;
 
+import android.arch.core.util.Function;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaScannerConnection;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.widget.EditText;
 
 import com.example.arcibald160.sopilatranscriptor.R;
 

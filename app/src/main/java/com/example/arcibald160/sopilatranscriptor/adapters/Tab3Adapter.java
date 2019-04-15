@@ -9,12 +9,16 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.example.arcibald160.sopilatranscriptor.R;
+import com.example.arcibald160.sopilatranscriptor.helpers.NetworkUtils;
 import com.example.arcibald160.sopilatranscriptor.helpers.Utils;
 
 import java.io.File;
@@ -40,7 +44,7 @@ public class Tab3Adapter extends RecyclerView.Adapter<Tab3Adapter.ListViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ListViewHolder holder, int position) {
         final File file = mSheets[position];
 //        bytes to kilo bytes
         String size = Utils.formatFileSize(file.length());
@@ -53,24 +57,27 @@ public class Tab3Adapter extends RecyclerView.Adapter<Tab3Adapter.ListViewHolder
 
         holder.sheetEntry.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View view) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
-                alertDialog.setTitle(view.getContext().getString(R.string.delete_sheet_warning));
+            public boolean onLongClick(final View view) {
+                PopupMenu sheetMenu = new PopupMenu(view.getContext(), holder.sheetEntry);
+                sheetMenu.getMenuInflater().inflate(R.menu.sheet_utils_menu, sheetMenu.getMenu());
 
-                alertDialog.setPositiveButton(view.getContext().getString(R.string.delete_label),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            file.delete();
-                            refreshSheetDir();
+                sheetMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        final Context context = view.getContext();
+
+                        if (menuItem.getTitle().toString().equals(context.getString(R.string.rename_label))) {
+                            // rename
+                            renameListItem(context, file);
+                        } else if (menuItem.getTitle().toString().equals(context.getString(R.string.delete_label))) {
+                            deleteListItem(context, file);
                         }
-                    });
-                alertDialog.setNegativeButton(view.getContext().getString(R.string.cancel),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                alertDialog.show();
+                        return true;
+                    }
+                });
+                sheetMenu.show();
+
                 return true;
             }
         });
@@ -87,6 +94,52 @@ public class Tab3Adapter extends RecyclerView.Adapter<Tab3Adapter.ListViewHolder
                 view.getContext().startActivity(intent);
             }
         });
+    }
+
+    private void renameListItem(Context context, final File file) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setTitle(context.getString(R.string.rename_title, file.getName()));
+        final EditText newNameEditText = new EditText(context);
+        newNameEditText.setText(file.getName());
+
+        alertDialog.setView(newNameEditText);
+        alertDialog.setPositiveButton(
+            context.getString(R.string.save_label),
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    File newFile = new File(file.getParent(), newNameEditText.getText().toString());
+                    Utils.renameFile(file, newFile);
+                    refreshSheetDir();
+                }
+            }
+        );
+        alertDialog.setNegativeButton(context.getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.show();
+    }
+
+    private void deleteListItem(Context context, final File file) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setTitle(context.getString(R.string.delete_sheet_warning, file.getName()));
+
+        alertDialog.setPositiveButton(context.getString(R.string.delete_label),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        file.delete();
+                        refreshSheetDir();
+                    }
+                });
+        alertDialog.setNegativeButton(context.getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.show();
     }
 
     @Override

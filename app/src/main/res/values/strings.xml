@@ -15,8 +15,14 @@
     <string name="sp_ip_server_address">shared_pref_ip_address</string>
     <string name="sp_ip_server_address_default">192.168.1.5:8000</string>
     <string name="delete_label">Delete</string>
-    <string name="delete_recording_warning">Delete this recording?</string>
-    <string name="delete_sheet_warning">Delete this sheet?</string>
+    <string name="delete_recording_warning">Delete recording %1$s?</string>
+    <string name="delete_sheet_warning">Delete sheet %1$s?</string>
     <string name="rename_label">Rename</string>
+    <string name="rename_title">Rename %1$s</string>
     <string name="export_label">Export as pdf</string>
+    <string name="upload_success_message">"File was successfully uploaded"</string>
+    <string name="upload_fail_message">"File upload failed"</string>
+    <string name="download_success_message">"File was successfully downloaded"</string>
+    <string name="download_inprogress">"File download in progress..."</string>
+    <string name="download_fail_message">"Download failed"</string>
 </resources>
