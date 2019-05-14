@@ -6,7 +6,7 @@
     <string name="rec_folder">sopilaRecordings</string>
     <string name="duration_default">00:00s</string>
     <string name="size_default">0 KB</string>
-    <string name="free_space_msg">Remaining storage:</string>
+    <string name="location_default">Pinezići, Krk, Croatia</string>
     <string name="pdf_folder">sopilaMusicSheets</string>
     <string name="server_ip_label">Edit server ip address</string>
     <string name="save_label">Save</string>

@@ -54,7 +54,7 @@ public class TabFragment2 extends Fragment {
         sizeView = view.findViewById(R.id.size_recorded);
         freeView = view.findViewById(R.id.free_space);
 
-        freeView.setText(Utils.getAvailableInternalMemorySize(getString(R.string.free_space_msg)));
+        freeView.setText(Utils.getAvailableInternalMemorySize(""));
 
         MediaScannerConnection.scanFile(
                 view.getContext(),
