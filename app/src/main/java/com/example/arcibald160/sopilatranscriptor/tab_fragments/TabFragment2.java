@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import io.gresse.hugo.vumeterlibrary.VuMeterView;
 import omrecorder.AudioRecordConfig;
 import omrecorder.OmRecorder;
 import omrecorder.PullTransport;
@@ -37,6 +38,7 @@ public class TabFragment2 extends Fragment {
     private Runnable updater;
     private long durationSec = 0;
     private Handler timerHandler = new Handler();
+    private VuMeterView musicEqualizer;
     TextView durationView, sizeView, freeView;
 
     public TabFragment2() {
@@ -50,6 +52,7 @@ public class TabFragment2 extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab_2, container, false);
 
+        musicEqualizer = view.findViewById(R.id.vumeter);
         durationView = view.findViewById(R.id.time_recorded);
         sizeView = view.findViewById(R.id.size_recorded);
         freeView = view.findViewById(R.id.free_space);
@@ -69,6 +72,7 @@ public class TabFragment2 extends Fragment {
             @Override
             public void onClick(View view) {
                 if (recButton.isChecked()) {
+                    musicEqualizer.resume(true);
                     recorder = OmRecorder.wav(
                             new PullTransport.Default(new PullableSource.Default(
                                     new AudioRecordConfig.Default(
@@ -87,6 +91,7 @@ public class TabFragment2 extends Fragment {
                         updateRecordInfo();
                     }
                 } else {
+                    musicEqualizer.stop(true);
                     InsertFileNameDialog filenameDialog = new InsertFileNameDialog(tempRecFile, view.getContext());
                     filenameDialog.show(getActivity().getSupportFragmentManager(), "filename");
 

@@ -48,23 +48,26 @@
         app:layout_constraintStart_toEndOf="@+id/relativeLayout"
         app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
 
-    <ImageView
-        android:id="@+id/cover_image"
-        android:layout_width="287dp"
-        android:layout_height="231dp"
+    <io.gresse.hugo.vumeterlibrary.VuMeterView xmlns:vumeter="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/vumeter"
+        android:layout_width="349dp"
+        android:layout_height="300dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/rounded_box"
-        android:scaleType="fitCenter"
-        android:src="@mipmap/sopila_fore"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="40dp"
+        vumeter:layout_constraintBottom_toTopOf="@+id/storage_img_view"
+        vumeter:layout_constraintEnd_toEndOf="parent"
+        vumeter:layout_constraintStart_toStartOf="parent"
+        vumeter:layout_constraintTop_toTopOf="parent"
+        vumeter:vumeter_backgroundColor="@color/ochre_yellow"
+        vumeter:vumeter_blockNumber="30"
+        vumeter:vumeter_speed="30"
+        vumeter:vumeter_startOff="true"
+        vumeter:vumeter_stopSize="5dp" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -118,15 +121,10 @@
         android:id="@+id/storage_img_view"
         android:layout_width="45dp"
         android:layout_height="38dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="64dp"
         android:src="@drawable/storage_icon"
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
-        app:layout_constraintStart_toStartOf="@+id/time_recorded"
-        app:layout_constraintTop_toBottomOf="@+id/cover_image"
-        app:layout_constraintVertical_bias="0.606" />
+        app:layout_constraintStart_toStartOf="@+id/time_recorded" />
 
     <TextView
         android:id="@+id/location_text_view"
@@ -134,11 +132,25 @@
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:gravity="center"
         android:text="@string/location_default"
         android:textSize="15sp"
-        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/location_img_view"
         app:layout_constraintStart_toEndOf="@+id/location_img_view"
         app:layout_constraintTop_toTopOf="@+id/location_img_view" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="377dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="385dp" />
 
 </android.support.constraint.ConstraintLayout>
