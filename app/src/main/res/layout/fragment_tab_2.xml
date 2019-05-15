@@ -106,13 +106,13 @@
 
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/location_img_view"
+    <Button
+        android:id="@+id/location_img_btn"
         android:layout_width="42dp"
         android:layout_height="41dp"
         android:layout_marginStart="52dp"
         android:layout_marginLeft="52dp"
-        android:src="@drawable/location_icon"
+        android:background="@drawable/location_icon"
         app:layout_constraintBottom_toBottomOf="@+id/free_space"
         app:layout_constraintStart_toEndOf="@+id/free_space"
         app:layout_constraintTop_toTopOf="@+id/free_space" />
@@ -121,9 +121,13 @@
         android:id="@+id/storage_img_view"
         android:layout_width="45dp"
         android:layout_height="38dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="64dp"
         android:src="@drawable/storage_icon"
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+        app:layout_constraintEnd_toStartOf="@+id/relativeLayout"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/time_recorded" />
 
     <TextView
@@ -135,9 +139,9 @@
         android:gravity="center"
         android:text="@string/location_default"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@+id/location_img_view"
-        app:layout_constraintStart_toEndOf="@+id/location_img_view"
-        app:layout_constraintTop_toTopOf="@+id/location_img_view" />
+        app:layout_constraintBottom_toBottomOf="@+id/storage_img_view"
+        app:layout_constraintStart_toEndOf="@+id/location_img_btn"
+        app:layout_constraintTop_toTopOf="@+id/storage_img_view" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
