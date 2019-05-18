@@ -7,20 +7,38 @@
     android:background="@color/light_blue"
     tools:context=".tab_fragments.TabFragment2">
 
-    <TextView
-        android:id="@+id/free_space"
-        android:layout_width="77dp"
-        android:layout_height="41dp"
+    <io.gresse.hugo.vumeterlibrary.VuMeterView
+        android:id="@+id/vumeter"
+        android:layout_width="349dp"
+        android:layout_height="250dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:background="@drawable/rounded_box"
-        android:gravity="center"
-        android:text="@string/size_default"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@+id/storage_img_view"
-        app:layout_constraintStart_toEndOf="@+id/storage_img_view"
-        app:layout_constraintTop_toTopOf="@+id/storage_img_view" />
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/background_middle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.565"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:vumeter_backgroundColor="@color/ochre_yellow"
+        app:vumeter_blockNumber="30"
+        app:vumeter_speed="30"
+        app:vumeter_startOff="true"
+        app:vumeter_stopSize="5dp" />
+
+    <View
+        android:id="@+id/background_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="364dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@+id/storage_img_view"
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/time_recorded"
@@ -47,27 +65,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/relativeLayout"
         app:layout_constraintStart_toEndOf="@+id/relativeLayout"
         app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
-
-    <io.gresse.hugo.vumeterlibrary.VuMeterView xmlns:vumeter="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/vumeter"
-        android:layout_width="349dp"
-        android:layout_height="300dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="40dp"
-        vumeter:layout_constraintBottom_toTopOf="@+id/storage_img_view"
-        vumeter:layout_constraintEnd_toEndOf="parent"
-        vumeter:layout_constraintStart_toStartOf="parent"
-        vumeter:layout_constraintTop_toTopOf="parent"
-        vumeter:vumeter_backgroundColor="@color/ochre_yellow"
-        vumeter:vumeter_blockNumber="30"
-        vumeter:vumeter_speed="30"
-        vumeter:vumeter_startOff="true"
-        vumeter:vumeter_stopSize="5dp" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -106,24 +103,46 @@
 
     </RelativeLayout>
 
+    <View
+        android:id="@+id/background_middle"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toTopOf="@+id/background_buttons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/calendar_view"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/calendar_icon"
+        app:layout_constraintBottom_toTopOf="@+id/location_img_btn"
+        app:layout_constraintEnd_toEndOf="@+id/location_img_btn"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
     <Button
         android:id="@+id/location_img_btn"
-        android:layout_width="42dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginLeft="52dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/location_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/free_space"
-        app:layout_constraintStart_toEndOf="@+id/free_space"
-        app:layout_constraintTop_toTopOf="@+id/free_space" />
+        app:layout_constraintBottom_toTopOf="@+id/storage_img_view"
+        app:layout_constraintEnd_toEndOf="@+id/storage_img_view"
+        app:layout_constraintStart_toStartOf="@+id/storage_img_view" />
 
     <ImageView
         android:id="@+id/storage_img_view"
         android:layout_width="45dp"
-        android:layout_height="38dp"
+        android:layout_height="45dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="32dp"
         android:src="@drawable/storage_icon"
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toStartOf="@+id/relativeLayout"
@@ -131,17 +150,52 @@
         app:layout_constraintStart_toStartOf="@+id/time_recorded" />
 
     <TextView
+        android:id="@+id/date_view"
+        android:layout_width="263dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text=""
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/calendar_view"
+        app:layout_constraintStart_toEndOf="@+id/calendar_view"
+        app:layout_constraintTop_toTopOf="@+id/calendar_view"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
         android:id="@+id/location_text_view"
-        android:layout_width="107dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_width="263dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center"
         android:text="@string/location_default"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@+id/storage_img_view"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/storage_img_view"
         app:layout_constraintStart_toEndOf="@+id/location_img_btn"
-        app:layout_constraintTop_toTopOf="@+id/storage_img_view" />
+        app:layout_constraintTop_toTopOf="@+id/location_img_btn"
+        app:layout_constraintVertical_bias="0.8" />
+
+    <TextView
+        android:id="@+id/free_space"
+        android:layout_width="263dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:gravity="center"
+        android:text="@string/size_default"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/storage_img_view"
+        app:layout_constraintStart_toEndOf="@+id/storage_img_view"
+        app:layout_constraintTop_toTopOf="@+id/storage_img_view"
+        app:layout_constraintVertical_bias="1.0" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"

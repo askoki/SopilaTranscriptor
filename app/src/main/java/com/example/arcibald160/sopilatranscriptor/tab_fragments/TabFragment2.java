@@ -33,7 +33,10 @@ import com.google.android.gms.location.LocationServices;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -58,7 +61,7 @@ public class TabFragment2 extends Fragment {
     private Button locationButton;
     private LocationListener locationListener;
     private LocationManager mLocationManager;
-    TextView durationView, sizeView, freeView, locationView;
+    TextView durationView, sizeView, freeView, locationView, dateView;
 
     public TabFragment2() {
         // Required empty public constructor
@@ -78,8 +81,14 @@ public class TabFragment2 extends Fragment {
         freeView = view.findViewById(R.id.free_space);
         locationButton = view.findViewById(R.id.location_img_btn);
         locationView = view.findViewById(R.id.location_text_view);
+        dateView = view.findViewById(R.id.date_view);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(view.getContext());
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd/MMM/yyyy");
+        String formattedDate = df.format(c);
+        dateView.setText(formattedDate);
 
         // Acquire a reference to the system Location Manager
         mLocationManager = (LocationManager) view.getContext().getSystemService(view.getContext().LOCATION_SERVICE);
