@@ -47,6 +47,7 @@ import omrecorder.OmRecorder;
 import omrecorder.PullTransport;
 import omrecorder.PullableSource;
 import omrecorder.Recorder;
+import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 
 
 public class TabFragment2 extends Fragment {
@@ -84,6 +85,7 @@ public class TabFragment2 extends Fragment {
         dateView = view.findViewById(R.id.date_view);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(view.getContext());
+        final PulsatorLayout pulsator = view.findViewById(R.id.pulsator);
 
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd/MMM/yyyy");
@@ -128,6 +130,8 @@ public class TabFragment2 extends Fragment {
             @Override
             public void onClick(View view) {
                 if (recButton.isChecked()) {
+                    pulsator.bringToFront();
+                    pulsator.start();
                     musicEqualizer.resume(true);
                     recorder = OmRecorder.wav(
                             new PullTransport.Default(new PullableSource.Default(
@@ -147,6 +151,7 @@ public class TabFragment2 extends Fragment {
                         updateRecordInfo();
                     }
                 } else {
+                    pulsator.stop();
                     musicEqualizer.stop(true);
                     InsertFileNameDialog filenameDialog = new InsertFileNameDialog(tempRecFile, view.getContext());
                     filenameDialog.show(getActivity().getSupportFragmentManager(), "filename");
