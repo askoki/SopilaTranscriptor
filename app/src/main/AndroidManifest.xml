@@ -17,6 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".MapActivity" />
+        <activity android:name=".PdfActivity" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -34,6 +36,13 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
         </provider>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDKybJSzrQcmlmmmIa0aasV2-mV3YjK0Ok"/>
+
     </application>
+
+
 
 </manifest>

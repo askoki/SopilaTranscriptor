@@ -3,6 +3,7 @@ package com.example.arcibald160.sopilatranscriptor;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -154,6 +155,13 @@ public class MainActivity extends AppCompatActivity {
                         });
                 alertDialog.show();
                 return true;
+
+            case R.id.test_pdf_view:
+                // calling pdf activity for displaying pdf AND related metadata
+                Intent intent = new Intent(this, PdfActivity.class);
+                startActivity(intent);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

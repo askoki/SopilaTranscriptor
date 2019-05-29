@@ -2,6 +2,7 @@ package com.example.arcibald160.sopilatranscriptor.tab_fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -22,9 +23,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.example.arcibald160.sopilatranscriptor.MapActivity;
 import com.example.arcibald160.sopilatranscriptor.helpers.InsertFileNameDialog;
 import com.example.arcibald160.sopilatranscriptor.R;
 import com.example.arcibald160.sopilatranscriptor.helpers.Utils;
@@ -63,6 +66,7 @@ public class TabFragment2 extends Fragment {
     private LocationListener locationListener;
     private LocationManager mLocationManager;
     TextView durationView, sizeView, freeView, locationView, dateView;
+    Location location = null;
 
     public TabFragment2() {
         // Required empty public constructor
@@ -75,6 +79,9 @@ public class TabFragment2 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab_2, container, false);
+
+        final Switch mySwitch = view.findViewById(R.id.switch1);
+        mySwitch.setClickable(false);
 
         musicEqualizer = view.findViewById(R.id.vumeter);
         durationView = view.findViewById(R.id.time_recorded);
@@ -92,12 +99,26 @@ public class TabFragment2 extends Fragment {
         String formattedDate = df.format(c);
         dateView.setText(formattedDate);
 
+        // Show location on map
+        Button fakeButton = view.findViewById(R.id.buttonFake);
+        fakeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (location != null) {
+                    Intent intent = new Intent(getActivity(), MapActivity.class);
+                    intent.putExtra("LONGITUDE", location.getLongitude());
+                    intent.putExtra("LATITUDE", location.getLatitude());
+                    startActivity(intent);
+                }
+            }
+        });
+
         // Acquire a reference to the system Location Manager
         mLocationManager = (LocationManager) view.getContext().getSystemService(view.getContext().LOCATION_SERVICE);
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Location location = getLastKnownLocation();
+                location = getLastKnownLocation();
                 if (location != null) {
                     Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
                     List<Address> addresses = null;
@@ -147,6 +168,7 @@ public class TabFragment2 extends Fragment {
 
                     try {
                         recorder.startRecording();
+                        mySwitch.setChecked(true);
                     } finally {
                         updateRecordInfo();
                     }
@@ -158,6 +180,7 @@ public class TabFragment2 extends Fragment {
 
                     try {
                         recorder.stopRecording();
+                        mySwitch.setChecked(false);
 //                        disable updater
                         resetRecordInfo();
                     } catch (IOException e) {

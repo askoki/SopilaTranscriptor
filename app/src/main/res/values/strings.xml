@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name" translatable="true">SopilaTranscriptor</string>
+    <string name="app_name" translatable="true">Sopela Music Transcriptor</string>
     <string name="filename_dialog_header" translatable="true">Insert new file name</string>
     <string name="ok" translatable="true">Ok</string>
     <string name="cancel" translatable="true">Cancel</string>
     <string name="rec_folder">sopilaRecordings</string>
     <string name="duration_default">00:00s</string>
     <string name="size_default">0 KB</string>
-    <string name="location_default">Pinezići, Krk, Croatia</string>
+    <string name="location_default">Pinezići, Croatia</string>
     <string name="pdf_folder">sopilaMusicSheets</string>
     <string name="server_ip_label">Edit server ip address</string>
     <string name="save_label">Save</string>
@@ -25,4 +25,5 @@
     <string name="download_success_message">"File was successfully downloaded"</string>
     <string name="download_inprogress">"File download in progress..."</string>
     <string name="download_fail_message">"Download failed"</string>
+    <string name="test_pdf_view">Test PdfView</string>
 </resources>

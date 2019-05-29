@@ -2,4 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/change_server_ip"
         android:title="@string/server_ip_label" />
+    <item android:id="@+id/test_pdf_view"
+        android:title="@string/test_pdf_view" />
 </menu>
