@@ -18,7 +18,7 @@ public class PdfActivity extends AppCompatActivity {
 
         PDFView myPdfView = findViewById(R.id.pdfView);
 
-        InputStream myFile = getResources().openRawResource(R.raw.a);
+        InputStream myFile = getResources().openRawResource(R.raw.sadila_je_mare_rf);
         myPdfView.fromStream(myFile).load();
 
     }
