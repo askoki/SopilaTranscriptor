@@ -27,4 +27,5 @@
     <string name="download_fail_message">"Download failed"</string>
     <string name="test_pdf_view">Test PdfView</string>
     <string name="google_maps_key"></string>
+    <string name="pdf_extra_key">pdf</string>
 </resources>
